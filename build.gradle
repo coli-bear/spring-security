@@ -1,0 +1,31 @@
+plugins {
+    id 'org.springframework.boot' version '2.7.0'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+}
+
+group = 'study.cb'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // 이거 적용하면 바로 보안이 적용
+    // 추가하고 서버 기동하면 login form 부터 나오게 됨
+    // 접속 계정 : user
+    // 접속 비번 : 16dee9f9-e164-4cb8-bca4-7a02972e66dc <- 랜덤하게 생성 됨
+    // 인증 방식은 폼 로그인 방식과 httpBasic 로그인 방식 제공
+    // 기본 로그인 페이지 제공
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
