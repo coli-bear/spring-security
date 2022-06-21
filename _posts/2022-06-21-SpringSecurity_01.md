@@ -1,9 +1,10 @@
-# Spring Security #1 - Spring Security 기본 API 및 Filter 이해
+# Spring Security #1 - Spring Security 기본 API 및 Filter 이해 (1)
 ## 환경
 - java 11
 - spring 2.7
 - spring security 2.7 
 - spring data jpa 2.7
+
 ## Spring Security 기본 설정
 ### Sample code
 ```java
