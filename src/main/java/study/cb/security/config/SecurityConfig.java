@@ -1,12 +1,17 @@
 package study.cb.security.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
@@ -21,6 +26,8 @@ import java.io.IOException;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    private UserDetailsService userDetailService;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 //        return http
@@ -79,6 +86,34 @@ public class SecurityConfig {
                 .logoutSuccessHandler((HttpServletRequest request, HttpServletResponse response, Authentication authentication) -> {
                     // lambda 이용
                 });
+
+//        http.rememberMe()
+//                .rememberMeParameter("remember") // 기본 파라미터 명은 remember-me (check box의 parameter)
+//                .tokenValiditySeconds(3600) // default 14
+//                .alwaysRemember(true)  // remember me 기능이 활성화 되지 않아도 항상 실행
+//                .userDetailsService(userDetailService); // remember me 설정시 반드시 필요한 설정, 시스템에 있는 사용자 정보 가져오기 위한
+        ;
+
+        http.anonymous()    // 기본적으로 활성화 되어있음
+                .authenticationFilter(new AnonymousAuthenticationFilter(
+                                "key",
+                                "anonymousUser",
+                                AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS")
+                        )
+                )
+                .authenticationProvider(new AuthenticationProvider() {
+                    @Override
+                    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+                        return null;
+                    }
+
+                    @Override
+                    public boolean supports(Class<?> authentication) {
+                        return false;
+                    }
+                })
+                .disable(); // 사용하지 않는 경우
+
 
         return http.build();
     }
