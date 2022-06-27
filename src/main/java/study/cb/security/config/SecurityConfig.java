@@ -114,7 +114,23 @@ public class SecurityConfig {
                 })
                 .disable(); // 사용하지 않는 경우
 
+        http.sessionManagement() // 세션 관리 기능 동작
+                .maximumSessions(1) // 최대 허용 가능 세션 수 , -1 : 무제한 로그인
+                .maxSessionsPreventsLogin(true) // 동시 로그인 차단, false: 기존 세션 만료(default)
+                .expiredUrl("/expired") // 세션이 만료된 경우 이동 할 페이지
+        // 아래 옵션은 인강에서는 나오는데 spring 2.7에서는 안나옴...
+//                .invalidSessionUrl("/invalid") // 세션이 유효하지 않을 때 이동 할 페이지
+        ;
 
+        // 세션 고정 보호
+        http.sessionManagement()
+                .sessionFixation().changeSessionId()// 기본값,
+                                                    // none, migrateSession, newSession
+
+        // migrateSession : 이전 세션에 설정한 속성값을 그대로 사용
+        // newSession : 세션을 새로 발급하지만 이전에 설정한 속헝값을 사용 못함
+        // none : 세션ID 가 바뀌지 않아 세션 고정 공격에 당하게 됨
+        ;
         return http.build();
     }
 

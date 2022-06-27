@@ -15,6 +15,8 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
+    implementation group: 'com.ncloud', name: 'ncloud-sdk-java', version: '1.1.0'
+
     // 이거 적용하면 바로 보안이 적용
     // 추가하고 서버 기동하면 login form 부터 나오게 됨
     // 접속 계정 : user
