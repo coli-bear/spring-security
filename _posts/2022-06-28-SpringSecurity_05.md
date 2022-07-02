@@ -1,5 +1,5 @@
 ---
-title: "Spring Security #1 - 기본 API 및 Filter (4)"
+title: "Spring Security #2 - 주요 아키텍처 이해 (1)"
 
 excerpt: "Spring Security"
 
