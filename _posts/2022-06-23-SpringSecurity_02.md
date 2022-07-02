@@ -186,3 +186,22 @@ public class SecurityConfig {
     }
 }
 ```
+
+## PasswordEncoder
+
+- 비밀번호를 안전하게 암호화 하도록 제공
+- Spring Security 이전에는 기본 PasswordEncoder 가 평문을 지원하는 NoOpPasswordEncoder(현재 Deprecated)
+- 생성
+    - 여러개의 PasswordEncoder 유형을 선언한 뒤, 상황에 맞게 선택해서 사용할수 있도록 지원
+
+```java
+PasswordEncoder passwordEncoder=PasswordEncoderFactories.createDelegatingPasswordEncoder();
+```
+
+- 암호화 포맷
+  - `{id}encodedPassword`
+  - 기본은 BCrypt 제공
+  - 그 외 noop, pbkdf2, scrypt, sha256 제공
+- Interface
+  - `encode(password)` : 패스워드 암호화
+  - `matches(rawPassword, encodedPassword)` : 패스워드 비교

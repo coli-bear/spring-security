@@ -1,5 +1,32 @@
 spring:
-  security:
-    user:
-      name: user
-      password: 1111
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+  main:
+    allow-bean-definition-overriding: true
+  profiles:
+    active: local
+  datasource:
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+    url: jdbc:h2:tcp://localhost:11112/~/h2/datasource/security
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        # system.out 으로 출력
+        #        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+
+logging:
+  level:
+    # logger 로 출력 (가급적이면 요거 사용)
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
