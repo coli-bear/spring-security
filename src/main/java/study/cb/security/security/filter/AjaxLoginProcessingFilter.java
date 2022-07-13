@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Component("ajaxLoginProcessingFilter")
+@Component
 public class AjaxLoginProcessingFilter extends AbstractAuthenticationProcessingFilter {
     public static final String AJAX_HEADER = "X-Requested-With";
 
@@ -45,7 +45,8 @@ public class AjaxLoginProcessingFilter extends AbstractAuthenticationProcessingF
                 accountDto.getPassword()
         );
 
-        return getAuthenticationManager().authenticate(authenticationToken);
+        AuthenticationManager authenticationManager = getAuthenticationManager();
+        return authenticationManager.authenticate(authenticationToken);
     }
 
     private boolean isAjax(HttpServletRequest request) {

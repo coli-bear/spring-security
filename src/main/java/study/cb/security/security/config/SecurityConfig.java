@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,17 +16,13 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import study.cb.security.security.filter.AjaxLoginProcessingFilter;
 import study.cb.security.security.provider.CustomAuthenticationProvider;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@Order(1)
 public class SecurityConfig {
-
-    // CustomAuthenticationProvider에서 제공
-//    private final UserDetailsService userDetailsService;
-
     private final AuthenticationDetailsSource authenticationDetailsSource;
     private final AuthenticationSuccessHandler customAuthenticationSuccessHandler;
     private final AuthenticationFailureHandler customAuthenticationFailureHandler;
@@ -34,12 +31,6 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
-
-    @Bean
-    public AjaxLoginProcessingFilter ajaxLoginProcessingFilter() {
-        AjaxLoginProcessingFilter ajaxLoginProcessingFilter = new AjaxLoginProcessingFilter();
-        return ajaxLoginProcessingFilter;
     }
 
     @Bean
@@ -55,16 +46,6 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
-//        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-//        AjaxLoginProcessingFilter ajaxLoginProcessingFilter = ajaxLoginProcessingFilter();
-//        ajaxLoginProcessingFilter.setAuthenticationManager(authenticationManagerBuilder.build());
-//
-//        http.addFilterBefore(ajaxLoginProcessingFilter, UsernamePasswordAuthenticationFilter.class);
-
-//        authenticationManagerBuilder.userDetailsService(userDetailsService);
-//        http
-//                .authenticationManager(authenticationManagerBuilder.build());
 
         http
                 .authorizeRequests()
@@ -90,21 +71,9 @@ public class SecurityConfig {
 
         http.authenticationProvider(authenticationProvider());
 
+        http.csrf().disable();
 
 
         return http.build();
     }
-
-
-//    // In-Memory Authentication User add
-//    @Bean
-//    public InMemoryUserDetailsManager userDetailsService() {
-//
-//        String password = passwordEncoder().encode("1111");
-//
-//        UserDetails user1 = User.builder().password(password).username("username").roles("USER").build();
-//        UserDetails user2 = User.builder().password(password).username("manager").roles("MANAGER", "USER").build();
-//        UserDetails user3 = User.builder().password(password).username("admin").roles("ADMIN", "MANAGER", "USER").build();
-//        return new InMemoryUserDetailsManager(user1, user2, user3);
-//    }
 }
